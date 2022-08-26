@@ -13,4 +13,4 @@ Possui funcionalidade de criação de chaves PIX por:
 
 Permite consulta de dados salvos em banco de dados (MySQL)
 
-(Em Breve) Permite realização de transferências de valores da carteira de um usuário para a carteira de outro usuário
+Permite realização de transferências de valores da carteira de um usuário para a carteira de outro usuário
