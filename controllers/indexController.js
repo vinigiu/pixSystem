@@ -22,12 +22,12 @@ const indexController = {
 
             } else {
 
-                return res.send('Senha inválida')
+                return res.json({auth: false, data:'Senha inválida'})
 
             }
         } else {
 
-            return res.send("CPF inválido")
+            return res.json({auth: false, data:'CPF Inválido'})
 
         } 
 

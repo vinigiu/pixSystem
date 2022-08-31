@@ -1,10 +1,11 @@
 const db = require('../models');
-const accountsService = require('../services/accounts/accountsService')
+// const accountsService = require('../services/accounts/accountsService')
 
 const accountController = {
     account: async (req,res) => {
         const user = await db.Usuario.findOne({where:{cpf:req.body.cpf}});
         const wallet = await db.Carteira.findOne({where:{usuarios_id:await user.id}})
+        
         res.status(200).json({
             data: {
                 user: req.user,
