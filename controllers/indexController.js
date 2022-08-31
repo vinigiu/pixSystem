@@ -2,6 +2,7 @@ const db = require('../models');
 const jwt = require('jsonwebtoken')
 const SECRET = require('../config/secret')
 const indexService = require('../services/index/indexService')
+const {validationResult} = require('express-validator')
 
 const indexController = {
     showOneUser: async (req,res) => {
@@ -13,23 +14,30 @@ const indexController = {
 
     loginExec: async (req,res) => {
         let user = await indexService.confereCPF(req);
+        let errors = validationResult(req)
 
-        if (user != null) {
-            if(await indexService.confereSenha(req,user)){
-
-                const token = jwt.sign({user:user},SECRET,{expiresIn:600});
-                return res.json({auth:true,token:token})
-
+        if(errors.isEmpty()) {
+            if (user != null) {
+                if(await indexService.confereSenha(req,user)){
+    
+                    const token = jwt.sign({user:user},SECRET,{expiresIn:600});
+                    return res.json({auth:true,token:token})
+    
+                } else {
+    
+                    return res.json({auth: false, errors:'Senha inválida'})
+    
+                }
             } else {
-
-                return res.json({auth: false, data:'Senha inválida'})
-
-            }
+    
+                return res.json({auth: false, errors:'CPF Inválido'})
+    
+            } 
         } else {
 
-            return res.json({auth: false, data:'CPF Inválido'})
+            return res.json({auth: false, errors:errors.mapped()})
 
-        } 
+        }
 
     },
 }

@@ -1,6 +1,6 @@
 const {check} = require('express-validator')
 
-function verifyRegister (next) {
+function verifyRegister (req,res,next) {
     [
         check('nome')
             .notEmpty().withMessage('Nome precisa ser preenchido').bail()
@@ -23,7 +23,7 @@ function verifyRegister (next) {
             .isEmail().withMessage('Email inválido').bail(),
         check('senha')
             .notEmpty().withMessage('Senha precisa ser preeenchida').bail()
-            .isLength({ min: 5, max: 15 }).withMessage('Senha precisa ter no mínimo 5 e no máximo 15 caractéres').bail()
+            .isLength({ min: 4, max: 15 }).withMessage('Senha precisa ter no mínimo 4 e no máximo 15 caractéres').bail()
     ]
     next()
 }
