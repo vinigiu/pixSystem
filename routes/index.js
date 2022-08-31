@@ -8,7 +8,7 @@ const verifyJWT = require('../middlewares/verifyJWT')
 const verifyRegister = require('../middlewares/verifyRegister')
 
 /* GET home page. */
-router.post('/register', verifyRegister, usersController.registerExec);
+router.post('/register', verifyRegister.validation, verifyRegister.checkRegister, usersController.registerExec);
 
 router.get('/users', verifyJWT, usersController.userAll);
 

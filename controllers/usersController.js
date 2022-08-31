@@ -1,10 +1,12 @@
 const usersService= require('../services/user/usersService')
+const {validationResult} = require('express-validator')
 
 const usersController = {
     registerExec: async (req,res) => {
         //Criando usuário
         const user = usersService.userRegistration(req)
-        res.status(200).json({user:await user})
+        return res.status(200).json({user:await user})
+        
     },
 
     userAll : async (req,res) => {

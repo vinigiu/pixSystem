@@ -18,27 +18,18 @@ const indexController = {
 
         if(errors.isEmpty()) {
             if (user != null) {
-                if(await indexService.confereSenha(req,user)){
-    
+                if(await indexService.confereSenha(req,user)){    
                     const token = jwt.sign({user:user},SECRET,{expiresIn:600});
-                    return res.json({auth:true,token:token})
-    
-                } else {
-    
-                    return res.json({auth: false, errors:'Senha inválida'})
-    
+                    return res.json({auth:true,token:token})    
+                } else {    
+                    return res.status(400).json({auth: false, errors:'Senha inválida'})    
                 }
             } else {
-    
-                return res.json({auth: false, errors:'CPF Inválido'})
-    
+                return res.status(400).json({auth: false, errors:'CPF Inválido'})
             } 
         } else {
-
-            return res.json({auth: false, errors:errors.mapped()})
-
+            return res.status(400).json({auth: false, errors:errors.array()})
         }
-
     },
 }
 

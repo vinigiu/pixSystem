@@ -1,6 +1,7 @@
 const db = require('../../models');
 const keyService = require ('../keys/keyService')
 const walletService = require('../wallets/walletService')
+const bcrypt = require('bcrypt')
 
 const usersService = {
     userRegistration: async (req) => {
@@ -11,7 +12,7 @@ const usersService = {
         newUser.data_nasc = req.body.data_nasc;
         newUser.rg = req.body.rg;
         newUser.email = req.body.email;
-        newUser.senha = req.body.senha;
+        newUser.senha = bcrypt.hashSync(req.body.senha,10);
         newUser.ativo = 1;
 
         let lastUser = await db.Usuario.create(newUser)

@@ -1,31 +1,42 @@
-const {check} = require('express-validator')
+const {body, validationResult} = require('express-validator')
 
-function verifyRegister (req,res,next) {
-    [
-        check('nome')
-            .notEmpty().withMessage('Nome precisa ser preenchido').bail()
+const verifyRegister = {
+    validation: [
+        body('nome').notEmpty().withMessage('Nome precisa ser preenchido').bail()
             .isString().withMessage('Nome não pode conter caractéres que não sejam letras').bail(),
-        check('sobrenome')
+    
+        body('sobrenome')
             .notEmpty().withMessage('Sobrenome precisa ser preenchido').bail(),
-        check('cpf')
+    
+        body('cpf')
             .notEmpty().withMessage('Sobrenome precisa ser preenchido').bail()
             .isNumeric().withMessage('Somente caractéres numéricos são aceitos').bail()
             .isLength({ min: 11, max: 11 }).withMessage('CPF deve conter 11 dígitos').bail(),
-        check('data_nasc')
-            .notEmpty().withMessage('Data de Nascimento precisa ser preenchida').bail()
-            .isISO8601('yyyy-mm-dd').withMessage('Data de Nascimento inválida').bail(),
-        check('rg')
+    
+        body('data_nasc')
+            .notEmpty().withMessage('Data de Nascimento precisa ser preenchida').bail(),
+    
+        body('rg')
             .notEmpty().withMessage('RG precisa ser preenchido').bail()
             .isNumeric().withMessage('Somente caractéres numéricos são aceitos').bail()
             .isLength({ min: 9, max: 9 }).withMessage('RG deve conter 9 dígitos').bail(),
-        check('rg')
+    
+        body('email')
             .notEmpty().withMessage('Email precisa ser preenchido').bail()
             .isEmail().withMessage('Email inválido').bail(),
-        check('senha')
+    
+        body('senha')
             .notEmpty().withMessage('Senha precisa ser preeenchida').bail()
-            .isLength({ min: 4, max: 15 }).withMessage('Senha precisa ter no mínimo 4 e no máximo 15 caractéres').bail()
-    ]
-    next()
+            .isLength({ min: 3, max: 15 }).withMessage('Senha precisa ter no mínimo 3 e no máximo 15 caractéres').bail()
+    ],
+
+    checkRegister: (req,res,next) => {
+        const errors = validationResult(req)
+        if(!errors.isEmpty()) {
+            return res.status(400).json({errors:errors.array()})
+        }
+        next()
+    } 
 }
 
 module.exports = verifyRegister
