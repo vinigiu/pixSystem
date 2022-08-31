@@ -3,10 +3,10 @@ const SECRET = require('../config/secret')
 
 function verifyJWT (req,res,next) {
     const token = req.headers['x-access-token'];
-    
+
     jwt.verify(token, SECRET, (err,decoded) => {
         if(err) return res.status(401).redirect('/api/login');
-        req.userID = decoded.userID;
+        req.user = decoded.user;
         next();
     })
 }
